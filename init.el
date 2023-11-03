@@ -14,6 +14,7 @@
 
 ;; setup use-package
 (setq straight-use-package-by-default t)
+(straight-use-package 'use-package)
 
 ;; load all plugins
 (defun list-dir (x)
