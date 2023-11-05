@@ -12,3 +12,7 @@
 (use-package which-key
   :config
   (which-key-mode))
+
+(use-package doom-modeline
+  :config
+  (doom-modeline-mode))
