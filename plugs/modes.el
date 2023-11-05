@@ -8,3 +8,7 @@
   :config
   (yas-global-mode)
   (define-key yas-minor-mode-map (kbd "TAB") yas-maybe-expand))
+
+(use-package which-key
+  :config
+  (which-key-mode))
