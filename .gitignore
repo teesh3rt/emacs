@@ -3,3 +3,5 @@ straight
 transient
 auto-save-list
 eln-cache
+ido.last
+.mc-lists.el
