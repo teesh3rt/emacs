@@ -351,7 +351,7 @@
 #+begin_src emacs-lisp
   (use-package elfeed
     :custom
-    (elfeed-feeds '("https://www.howtogeek.com/feed" "https://gizmodo.com/rss" "https://www.morningbrew.com/feed.xml")))
+    (elfeed-feeds '("https://www.howtogeek.com/feed" "https://www.morningbrew.com/feed.xml")))
 #+end_src
 
 * Memes
