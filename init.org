@@ -29,10 +29,13 @@
   - [[#org-auto-tangle][Org auto tangle]]
   - [[#org-bullets][Org bullets]]
   - [[#org-table-of-contents][Org Table of Contents]]
+  - [[#org-contrib][Org Contrib]]
 - [[#themes][Themes]]
 - [[#doom-modeline][Doom modeline]]
 - [[#jumpy][Jumpy]]
 - [[#magit][Magit]]
+- [[#memes][Memes]]
+  - [[#blimpy][Blimpy]]
 - [[#fonts-and-stuff][Fonts and stuff]]
 
 * Settings
@@ -40,6 +43,7 @@
 #+begin_src emacs-lisp
   (defcustom settings-theme 'doom-gruvbox "The theme to use")
   (defcustom settings-evil t "Whether to use Evil")
+  (defcustom settings-memes t "Whether to install the funny stuff")
 #+end_src
 
 * Installing Elpaca
@@ -261,6 +265,13 @@
     :hook (org-mode . toc-org-mode))
 #+end_src
 
+** Org Contrib
+
+#+begin_src emacs-lisp
+  (use-package org-contrib
+    :after org)
+#+end_src
+
 * Themes
 
 #+begin_src emacs-lisp
@@ -304,6 +315,24 @@
     :general
     (def "g" '(magit :wk "Magit")))
 #+end_src
+
+* Memes
+
+** Blimpy
+
+#+begin_src emacs-lisp
+  (when settings-memes
+    (if settings-evil
+        (use-package blimpy
+  	:ensure (blimpy :host github :repo "progfolio/blimpy")
+  	:after (evil)
+  	:config
+  	(add-hook 'blimpy-before-typing-the-word-blimpy-in-emacs-hook
+                    (apply-partially #'evil-insert 1)))
+        (use-package blimpy
+  	:ensure (blimpy :host github :repo "progfolio/blimpy"))))
+#+end_src
+
 
 * Fonts and stuff
 
