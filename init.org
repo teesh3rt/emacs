@@ -33,6 +33,9 @@
 - [[#themes][Themes]]
 - [[#doom-modeline][Doom modeline]]
 - [[#jumpy][Jumpy]]
+- [[#emacs-rocks][Emacs Rocks!]]
+  - [[#multiple-cursorsel][multiple-cursors.el]]
+  - [[#expand-regionel][expand-region.el]]
 - [[#magit][Magit]]
 - [[#memes][Memes]]
   - [[#blimpy][Blimpy]]
@@ -305,6 +308,25 @@
       "j j" '(jumpy-jump :wk "Jump")
       "j a" '(jumpy-add :wk "Add")
       "j s" '(jumpy-select :wk "Select")))
+#+end_src
+
+* Emacs Rocks!
+
+** multiple-cursors.el
+
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :bind (
+     ("C->" . mc/mark-next-like-this)
+     ("C-<" . mc/mark-previous-like-this)
+     ("C-c C-<" . mc/mark-all-like-this)))
+#+end_src
+
+** expand-region.el
+
+#+begin_src emacs-lisp
+  (use-package expand-region
+    :bind (("M-@" . er/expand-region)))
 #+end_src
 
 * Magit
