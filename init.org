@@ -44,6 +44,8 @@
 
 * Settings
 
+Settings for this config.
+
 #+begin_src emacs-lisp
   (defcustom settings-theme 'doom-gruvbox "The theme to use")
   (defcustom settings-evil t "Whether to use Evil")
@@ -51,6 +53,14 @@
 #+end_src
 
 * Installing Elpaca
+
+The plugin manager that pulls this whole config together.
+
+#+begin_quote
+"Chews data, spits packages"
+
+https://github.com/progfolio/elpaca
+#+end_quote
 
 #+begin_src emacs-lisp
   (defvar elpaca-installer-version 0.7)
@@ -106,6 +116,8 @@
 
 * Emacs
 
+Some settings for Emacs that make working with it more smooth.
+
 #+begin_src emacs-lisp
   (setq make-backup-files nil)
   (setq inhibit-startup-message t)
@@ -115,6 +127,8 @@
 * Evil
 
 ** Evil mode
+
+Emacs? Vim? Why choose!
 
 #+begin_src emacs-lisp
   (when settings-evil
@@ -127,6 +141,8 @@
 
 ** Evil collection
 
+Make evil work better with other things
+
 #+begin_src emacs-lisp
   (when settings-evil
     (use-package evil-collection
@@ -137,12 +153,17 @@
 
 ** Evil Anzu
 
+Make searching better: Evil edition.
+
 #+begin_src emacs-lisp
-  (use-package evil-anzu
-    :after (evil anzu))
+  (when settings-evil
+    (use-package evil-anzu
+      :after (evil anzu))
 #+end_src
 
 * Anzu
+
+Make searching better.
 
 #+begin_src emacs-lisp
   (use-package anzu
@@ -153,6 +174,8 @@
 
 * WhichKey
 
+Show what you are really doing when you type.
+
 #+begin_src emacs-lisp
   (use-package which-key
     :config
@@ -160,6 +183,12 @@
 #+end_src
 
 * General
+
+#+begin_quote
+general.el provides a more convenient method for binding keys in emacs (for both evil and non-evil users).
+
+https://github.com/noctuid/general.el#about
+#+end_quote
 
 #+begin_src emacs-lisp
   (use-package general
@@ -179,11 +208,15 @@
 
 ** Ido mode
 
+Make picking stuff convenient.
+
 #+begin_src emacs-lisp
   (ido-mode)
 #+end_src
 
 ** Smex
+
+Ido for =M-x=
 
 #+begin_src emacs-lisp
   (use-package smex
@@ -191,6 +224,8 @@
 #+end_src
 
 * Yasnippets
+
+Please give me autocomplete for things not in the code!
 
 #+begin_src emacs-lisp
   (use-package yasnippet
@@ -201,6 +236,8 @@
 
 * Company
 
+Please give me autocomplete!
+
 #+begin_src emacs-lisp
   (use-package company
     :config
@@ -208,6 +245,8 @@
 #+end_src
 
 * Beacon
+
+Never lose your cursor again.
 
 #+begin_src emacs-lisp
   (use-package beacon
@@ -217,6 +256,8 @@
 
 
 * 0x0
+
+When you're too lazy to upload to GitHub.
 
 #+begin_src emacs-lisp
   (use-package 0x0
@@ -230,12 +271,24 @@
 
 * Smartparens
 
+#+begin_quote
+"oh shit i forgot a closing parenthesis again"
+
+me, a lot, while writing this config
+#+end_quote
+
 #+begin_src emacs-lisp
   (use-package smartparens
     :hook (prog-mode . smartparens-mode))
 #+end_src
 
 * Rainbow delimiters
+
+#+begin_quote
+"oh shit i cant find the parenthesis i forgot"
+
+me, a lot, while writing this config
+#+end_quote
 
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
@@ -246,12 +299,16 @@
 
 ** Org
 
+The thing that makes this config possible.
+
 #+begin_src emacs-lisp
   (use-package org
     :hook (org-mode . org-indent-mode))
 #+end_src
 
 ** Org auto tangle
+
+The thing that makes this config more convenient.
 
 #+begin_src emacs-lisp
   (use-package org-auto-tangle
@@ -261,6 +318,8 @@
 
 ** Org bullets
 
+The thing that makes this config look pretty.
+
 #+begin_src emacs-lisp
   (use-package org-bullets
     :after org
@@ -268,6 +327,8 @@
 #+end_src
 
 ** Org Table of Contents
+
+The thing that lets you navigate around the config without scrolling for hours.
 
 #+begin_src emacs-lisp
   (use-package toc-org
@@ -277,12 +338,16 @@
 
 ** Org Contrib
 
+Org: The sequel.
+
 #+begin_src emacs-lisp
   (use-package org-contrib
     :after org)
 #+end_src
 
 * Themes
+
+A bunch of themes if you want them
 
 #+begin_src emacs-lisp
   (use-package modus-themes)
@@ -296,6 +361,8 @@
 
 * Doom modeline
 
+Make the modeline prettier
+
 #+begin_src emacs-lisp
   (use-package doom-modeline
     :config
@@ -303,6 +370,8 @@
 #+end_src
 
 * Jumpy
+
+A plugin I made to jump between files.
 
 #+begin_src emacs-lisp
   (use-package jumpy
@@ -317,6 +386,8 @@
 #+end_src
 
 * Emacs Rocks!
+
+Thank you, [[https://github.com/magnars][Magnars]].
 
 ** multiple-cursors.el
 
@@ -337,6 +408,12 @@
 
 * Magit
 
+#+begin_quote
+"When I see people working with Git on the command line, I almost feel blind!"
+
+Magnar Sveen, aka Magnars
+#+end_quote
+
 #+begin_src emacs-lisp
   (use-package transient :after seq)
   (use-package magit
@@ -347,7 +424,11 @@
 
 * Memes
 
+The things you REALLY don't need if you want minimalism.
+
 ** Blimpy
+
+blimpy blimpy blimpy blimpy blimpy blimpy blimpy blimpy blimpy blimpy 
 
 #+begin_src emacs-lisp
   (when settings-memes
@@ -364,12 +445,16 @@
 
 ** Mines
 
+Minesweeper in Emacs!
+
 #+begin_src emacs-lisp
   (when settings-memes
     (use-package mines))
 #+end_src
 
 * Fonts and stuff
+
+Do I really need to explain this?
 
 #+begin_src emacs-lisp
   (menu-bar-mode -1)
