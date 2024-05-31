@@ -1,0 +1,314 @@
+#+TITLE: My Emacs Config
+#+AUTHOR: teesh3rt
+#+PROPERTY: header-args:emacs-lisp :tangle ./init.el
+#+auto_tangle: t
+
+* Table of Contents :toc:
+- [[#settings][Settings]]
+- [[#installing-elpaca][Installing Elpaca]]
+  - [[#elpaca-use-package-support][Elpaca `use-package` support]]
+- [[#emacs][Emacs]]
+- [[#evil][Evil]]
+  - [[#evil-mode][Evil mode]]
+  - [[#evil-collection][Evil collection]]
+  - [[#evil-anzu][Evil Anzu]]
+- [[#anzu][Anzu]]
+- [[#whichkey][WhichKey]]
+- [[#general][General]]
+- [[#ido][Ido]]
+  - [[#ido-mode][Ido mode]]
+  - [[#smex][Smex]]
+- [[#yasnippets][Yasnippets]]
+- [[#company][Company]]
+- [[#beacon][Beacon]]
+- [[#0x0][0x0]]
+- [[#org-things][Org Things]]
+  - [[#org][Org]]
+  - [[#org-auto-tangle][Org auto tangle]]
+  - [[#org-bullets][Org bullets]]
+  - [[#org-table-of-contents][Org Table of Contents]]
+- [[#themes][Themes]]
+- [[#doom-modeline][Doom modeline]]
+- [[#jumpy][Jumpy]]
+- [[#magit][Magit]]
+- [[#fonts-and-stuff][Fonts and stuff]]
+
+* Settings
+
+#+begin_src emacs-lisp
+  (defcustom settings-theme 'doom-gruvbox "The theme to use")
+  (defcustom settings-evil t "Whether to use Evil")
+#+end_src
+
+* Installing Elpaca
+
+#+begin_src emacs-lisp
+  (defvar elpaca-installer-version 0.7)
+  (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+  (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+  (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+  (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+				:ref nil :depth 1
+				:files (:defaults "elpaca-test.el" (:exclude "extensions"))
+				:build (:not elpaca--activate-package)))
+  (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+	 (build (expand-file-name "elpaca/" elpaca-builds-directory))
+	 (order (cdr elpaca-order))
+	 (default-directory repo))
+    (add-to-list 'load-path (if (file-exists-p build) build repo))
+    (unless (file-exists-p repo)
+      (make-directory repo t)
+      (when (< emacs-major-version 28) (require 'subr-x))
+      (condition-case-unless-debug err
+	  (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+		   ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+						   ,@(when-let ((depth (plist-get order :depth)))
+						       (list (format "--depth=%d" depth) "--no-single-branch"))
+						   ,(plist-get order :repo) ,repo))))
+		   ((zerop (call-process "git" nil buffer t "checkout"
+					 (or (plist-get order :ref) "--"))))
+		   (emacs (concat invocation-directory invocation-name))
+		   ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+					 "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+		   ((require 'elpaca))
+		   ((elpaca-generate-autoloads "elpaca" repo)))
+	      (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+	    (error "%s" (with-current-buffer buffer (buffer-string))))
+	((error) (warn "%s" err) (delete-directory repo 'recursive))))
+    (unless (require 'elpaca-autoloads nil t)
+      (require 'elpaca)
+      (elpaca-generate-autoloads "elpaca" repo)
+      (load "./elpaca-autoloads")))
+  (add-hook 'after-init-hook #'elpaca-process-queues)
+  (when (equal system-type 'windows-nt)
+    (elpaca-no-symlink-mode))
+  (elpaca `(,@elpaca-order))
+#+end_src
+
+** Elpaca `use-package` support
+
+#+begin_src emacs-lisp
+  (elpaca elpaca-use-package
+    (elpaca-use-package-mode))
+
+  (setq elpaca-use-package-by-default t)
+#+end_src
+
+* Emacs
+
+#+begin_src emacs-lisp
+  (setq make-backup-files nil)
+  (setq inhibit-startup-message t)
+  (setq initial-scratch-message nil)
+#+end_src
+
+* Evil
+
+** Evil mode
+
+#+begin_src emacs-lisp
+  (when settings-evil
+    (use-package evil
+      :preface
+      (setq evil-want-keybinding nil)
+      :config
+      (evil-mode)))
+#+end_src
+
+** Evil collection
+
+#+begin_src emacs-lisp
+  (when settings-evil
+    (use-package evil-collection
+      :after evil
+      :config
+      (evil-collection-init)))
+#+end_src
+
+** Evil Anzu
+
+#+begin_src emacs-lisp
+  (use-package evil-anzu
+    :after (evil anzu))
+#+end_src
+
+* Anzu
+
+#+begin_src emacs-lisp
+  (use-package anzu
+    :config
+    (global-anzu-mode))
+#+end_src
+
+
+* WhichKey
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :config
+    (which-key-mode))
+#+end_src
+
+* General
+
+#+begin_src emacs-lisp
+  (use-package general
+    :ensure (:wait t)
+    :demand t
+    :config
+    (general-create-definer def :prefix "SPC" :states '(normal visual)))
+#+end_src
+
+* Ido
+
+** Ido mode
+
+#+begin_src emacs-lisp
+  (ido-mode)
+#+end_src
+
+** Smex
+
+#+begin_src emacs-lisp
+  (use-package smex
+    :bind (("M-x" . smex)))
+#+end_src
+
+* Yasnippets
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :config
+    (yas-global-mode)
+    (define-key yas-minor-mode-map (kbd "TAB") yas-maybe-expand))
+#+end_src
+
+* Company
+
+#+begin_src emacs-lisp
+  (use-package company
+    :config
+    (global-company-mode))
+#+end_src
+
+* Beacon
+
+#+begin_src emacs-lisp
+  (use-package beacon
+    :config
+    (beacon-mode))
+#+end_src
+
+
+* 0x0
+
+#+begin_src emacs-lisp
+(use-package 0x0
+  :general
+  (def
+    "0" '(:ignore t :wk "0x0")
+    "0 f" '(0x0-upload-file :wk "Upload file")
+    "0 t" '(0x0-upload-text :wk "Upload text")
+    "0 k" '(0x0-upload-kill-ring :wk "Upload kill ring")))
+#+end_src
+
+* Org Things
+
+** Org
+
+#+begin_src emacs-lisp
+  (use-package org
+    :hook (org-mode . org-indent-mode))
+#+end_src
+
+** Org auto tangle
+
+#+begin_src emacs-lisp
+  (use-package org-auto-tangle
+    :after org
+    :hook (org-mode . org-auto-tangle-mode))
+#+end_src
+
+** Org bullets
+
+#+begin_src emacs-lisp
+  (use-package org-bullets
+    :after org
+    :hook (org-mode . org-bullets-mode))
+#+end_src
+
+** Org Table of Contents
+
+#+begin_src emacs-lisp
+  (use-package toc-org
+    :after org
+    :hook (org-mode . toc-org-mode))
+#+end_src
+
+* Themes
+
+#+begin_src emacs-lisp
+  (use-package modus-themes)
+  (use-package doom-themes)
+  (use-package badger-theme)
+  (use-package dracula-theme)
+  (use-package gruvbox-theme)
+
+  (add-hook #'elpaca-after-init-hook (lambda () (load-theme settings-theme t)))
+#+end_src
+
+* Doom modeline
+
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :config
+    (doom-modeline-mode))
+#+end_src
+
+* Jumpy
+
+#+begin_src emacs-lisp
+  (use-package jumpy
+    :ensure (jumpy :host github :repo "teesh3rt/jumpy")
+    :general
+    (def
+      "j" '(:ignore t :wk "Jumpy")
+      "j r" '(jumpy-reset :wk "Reset")
+      "j j" '(jumpy-jump :wk "Jump")
+      "j a" '(jumpy-add :wk "Add")
+      "j s" '(jumpy-select :wk "Select")))
+#+end_src
+
+* Magit
+
+#+begin_src emacs-lisp
+  (use-package transient :after seq)
+  (use-package magit
+    :after transient
+    :general
+    (def "g" '(magit :wk "Magit")))
+#+end_src
+
+* Fonts and stuff
+
+#+begin_src emacs-lisp
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+
+  (add-hook #'prog-mode-hook 'display-line-numbers-mode)
+
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(menu-bar-mode nil)
+   '(tool-bar-mode nil))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(default ((t (:family "JetBrainsMono NF Medium" :foundry "outline" :slant normal :weight medium :height 120 :width normal)))))  
+#+end_src
