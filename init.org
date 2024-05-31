@@ -37,7 +37,6 @@
   - [[#multiple-cursorsel][multiple-cursors.el]]
   - [[#expand-regionel][expand-region.el]]
 - [[#magit][Magit]]
-- [[#elfeed][Elfeed]]
 - [[#memes][Memes]]
   - [[#blimpy][Blimpy]]
   - [[#mines][Mines]]
@@ -344,14 +343,6 @@
     :after transient
     :general
     (def "g" '(magit :wk "Magit")))
-#+end_src
-
-* Elfeed
-
-#+begin_src emacs-lisp
-  (use-package elfeed
-    :custom
-    (elfeed-feeds '("https://www.howtogeek.com/feed" "https://www.morningbrew.com/feed.xml")))
 #+end_src
 
 * Memes
