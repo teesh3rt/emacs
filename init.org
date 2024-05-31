@@ -22,6 +22,8 @@
 - [[#company][Company]]
 - [[#beacon][Beacon]]
 - [[#0x0][0x0]]
+- [[#smartparens][Smartparens]]
+- [[#rainbow-delimiters][Rainbow delimiters]]
 - [[#org-things][Org Things]]
   - [[#org][Org]]
   - [[#org-auto-tangle][Org auto tangle]]
@@ -203,13 +205,27 @@
 * 0x0
 
 #+begin_src emacs-lisp
-(use-package 0x0
-  :general
-  (def
-    "0" '(:ignore t :wk "0x0")
-    "0 f" '(0x0-upload-file :wk "Upload file")
-    "0 t" '(0x0-upload-text :wk "Upload text")
-    "0 k" '(0x0-upload-kill-ring :wk "Upload kill ring")))
+  (use-package 0x0
+    :general
+    (def
+      "0" '(:ignore t :wk "0x0")
+      "0 f" '(0x0-upload-file :wk "Upload file")
+      "0 t" '(0x0-upload-text :wk "Upload text")
+      "0 k" '(0x0-upload-kill-ring :wk "Upload kill ring")))
+#+end_src
+
+* Smartparens
+
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :hook (prog-mode . smartparens-mode))
+#+end_src
+
+* Rainbow delimiters
+
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters
+    :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
 * Org Things
