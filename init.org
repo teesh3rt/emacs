@@ -36,6 +36,7 @@
 - [[#magit][Magit]]
 - [[#memes][Memes]]
   - [[#blimpy][Blimpy]]
+  - [[#mines][Mines]]
 - [[#fonts-and-stuff][Fonts and stuff]]
 
 * Settings
@@ -333,6 +334,12 @@
   	:ensure (blimpy :host github :repo "progfolio/blimpy"))))
 #+end_src
 
+** Mines
+
+#+begin_src emacs-lisp
+  (when settings-memes
+    (use-package mines))
+#+end_src
 
 * Fonts and stuff
 
