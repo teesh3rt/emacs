@@ -2,5 +2,7 @@ auto-save-list/
 elpaca/
 transient/
 server/
+org-persist/
 init.el
 smex-items
+ido.last
