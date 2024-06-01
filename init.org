@@ -16,9 +16,9 @@
 - [[#anzu][Anzu]]
 - [[#whichkey][WhichKey]]
 - [[#general][General]]
-- [[#ido][Ido]]
-  - [[#ido-mode][Ido mode]]
-  - [[#smex][Smex]]
+- [[#completion][Completion]]
+  - [[#vertico][Vertico]]
+  - [[#orderless][Orderless]]
 - [[#yasnippets][Yasnippets]]
 - [[#company][Company]]
 - [[#beacon][Beacon]]
@@ -205,23 +205,26 @@ https://github.com/noctuid/general.el#about
       "f d" '(dired :wk "Dired"))
 #+end_src
 
-* Ido
+* Completion
 
-** Ido mode
+** Vertico
 
-Make picking stuff convenient.
+Completion, but Vertical.
 
 #+begin_src emacs-lisp
-  (ido-mode)
+  (use-package vertico
+    :config
+    (vertico-mode))
 #+end_src
 
-** Smex
-
-Ido for =M-x=
+** Orderless
 
 #+begin_src emacs-lisp
-  (use-package smex
-    :bind (("M-x" . smex)))
+  (use-package orderless
+    :config
+    (setq completion-styles '(orderless basic)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles partial-completion)))))
 #+end_src
 
 * Yasnippets
