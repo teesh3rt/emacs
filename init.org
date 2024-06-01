@@ -1,3 +1,4 @@
+
 #+TITLE: My Emacs Config
 #+AUTHOR: teesh3rt
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el
@@ -158,7 +159,7 @@ Make searching better: Evil edition.
 #+begin_src emacs-lisp
   (when settings-evil
     (use-package evil-anzu
-      :after (evil anzu))
+      :after (evil anzu)))
 #+end_src
 
 * Anzu
