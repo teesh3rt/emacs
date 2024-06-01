@@ -22,6 +22,7 @@
 - [[#yasnippets][Yasnippets]]
 - [[#company][Company]]
 - [[#beacon][Beacon]]
+- [[#elfeed][ElFeed]]
 - [[#0x0][0x0]]
 - [[#smartparens][Smartparens]]
 - [[#rainbow-delimiters][Rainbow delimiters]]
@@ -256,6 +257,26 @@ Never lose your cursor again.
   (use-package beacon
     :config
     (beacon-mode))
+#+end_src
+
+* ElFeed
+
+Read news in Emacs
+
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :general
+    (def
+      "e" '(:ignore t :wk "Elfeed")
+      "e e" '(elfeed :wk "Elfeed")
+      "e a" '(:ignore t :wk "Add")
+      "e a f" '(elfeed-add-feed :wk "Add feed")))
+
+  (use-package elfeed-tube
+    :after elfeed
+    :general
+    (def
+      "e a t" '(elfeed-tube-add-feeds :wk "Add YouTube feed")))
 #+end_src
 
 
